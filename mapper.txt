@@ -1,0 +1,41 @@
+<!-- 전체검색 & primarykey 검색 & 키워드검색-->
+<select id="selectComment" parameterType="hashmap" resultType="comment">
+						<!-- 자바의 자료형은 대문자 마이바티즈의 자료형은 소문자로 받음 -->
+	SELECT *
+	<!-- comment_no 		AS commentNo,
+		user_id 		AS userId,
+		comment_content AS commentContent,
+		reg_date 		AS regDate   -->	
+	FROM comment_tab
+	<where>
+		<if test="commentNo != null">
+			comment_no = #{commentNo}<!-- comment_no가 있으면 where절에 comment_no를 만들겠다 -->
+		</if>
+		<if test="condition != null">
+			${condition} like '%${keyword}%'
+			<!-- userId like '%홍%'-->
+		</if>
+	</where>
+</select>
+
+<!-- PK 검색 -->
+<select id="selectCommentByPK" parameterType="long" resultType="comment">
+	SELECT *
+	FROM comment_tab
+	WHERE comment_no=#{commentNo}
+</select>
+
+<!-- 입력 -->
+<insert id="insertComment" parameterType="comment">
+	INSERT INTO comment_tab(user_id, comment_content, reg_date)
+	VALUES(#{userId},#{commentContent},sysdate())
+</insert>
+ 
+ <!-- 삭제 -->
+<delete id="deleteComment" parameterType="comment">
+ 	DELETE
+ 	FROM comment_tab
+ 	WHERE comment_no=#{commentNo} 
+ </delete>
+  
+</mapper>
